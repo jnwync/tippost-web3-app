@@ -4,6 +4,12 @@ import * as dotenv from "dotenv";
 
 dotenv.config();
 
+// Validate required env vars when targeting Sepolia
+if (process.env.npm_lifecycle_event?.includes("sepolia")) {
+  if (!process.env.SEPOLIA_RPC_URL) throw new Error("Missing SEPOLIA_RPC_URL in .env");
+  if (!process.env.PRIVATE_KEY) throw new Error("Missing PRIVATE_KEY in .env");
+}
+
 const config: HardhatUserConfig = {
   solidity: "0.8.20",
   networks: {
