@@ -46,8 +46,8 @@ export function TxStatusBar({ tx, onDismiss }: Props) {
     >
       <span className="tx-status-bar__left">
         {tx.status === "pending" && <span className="spinner" />}
-        {tx.status === "success" && "✅"}
-        {tx.status === "error" && "❌"}
+        {tx.status === "success" && <span className="status-dot status-dot--success" />}
+        {tx.status === "error" && <span className="status-dot status-dot--error" />}
         <span className="tx-status-bar__msg">
           {tx.status === "pending" && "Sending tip — waiting for confirmation..."}
           {tx.status === "success" && "Tip sent successfully!"}

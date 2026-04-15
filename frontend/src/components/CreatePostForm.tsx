@@ -39,7 +39,7 @@ export function CreatePostForm({ writeContract, onSuccess, appTx }: Props) {
 
   return (
     <form className="create-form" onSubmit={handleSubmit}>
-      <h2 className="form-title">✨ Create Post</h2>
+      <h2 className="form-title">Create Post</h2>
 
       <input
         className="form-input"
@@ -79,13 +79,13 @@ export function CreatePostForm({ writeContract, onSuccess, appTx }: Props) {
             <span className="spinner" /> Posting...
           </>
         ) : (
-          "Post 🔥"
+          "Post"
         )}
       </button>
 
       {tx.status === "error" && (
         <p className="tx-msg error">
-          ❌ {tx.message}{" "}
+          {tx.message}{" "}
           <button type="button" className="dismiss-btn" onClick={reset}>
             Dismiss
           </button>

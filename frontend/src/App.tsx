@@ -33,7 +33,10 @@ function App() {
   return (
     <div className="app">
       <header className="header">
-        <h1>TipPost 🔥</h1>
+        <div className="header-brand">
+          <h1>TipPost</h1>
+          <span className="header-subtitle">Tip Creators with ETH</span>
+        </div>
         <div className="header-right">
           {canInteract && address && (
             <EarningsBadge
@@ -55,8 +58,8 @@ function App() {
       <main className="main">
         {!address && (
           <EmptyState
-            icon="👛"
             title="Connect your wallet to start tipping"
+            subtitle="Post images and tip creators with ETH on Sepolia"
             action={{ label: "Connect Wallet", onClick: connect }}
           />
         )}
@@ -71,8 +74,8 @@ function App() {
 
         {error && (
           <EmptyState
-            icon="⚠️"
             title="Failed to load posts"
+            subtitle="There was a problem connecting to the network"
             action={{ label: "Try again", onClick: refetch, variant: "ghost" }}
           />
         )}
@@ -91,9 +94,8 @@ function App() {
 
         {!loading && !error && posts.length === 0 && (
           <EmptyState
-            icon="🔥"
-            title="No posts yet. Be the first to share!"
-            subtitle="Connect your wallet and create a post above"
+            title="No posts yet"
+            subtitle="Be the first to share — create a post above"
           />
         )}
 
@@ -108,6 +110,10 @@ function App() {
           />
         )}
       </main>
+
+      <footer className="footer">
+        TipPost — Built on Ethereum Sepolia Testnet — Tip cost: 0.0001 ETH
+      </footer>
     </div>
   );
 }

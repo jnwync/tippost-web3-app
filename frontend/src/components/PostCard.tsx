@@ -84,12 +84,12 @@ export function PostCard({ post, connectedAddress, readContract, writeContract, 
   ].filter(Boolean).join(" ");
 
   const tipLabel = () => {
-    if (isOwn) return "🔥 Your post";
-    if (liked) return "❤️‍🔥 Tipped!";
+    if (isOwn) return "Your post";
+    if (liked) return "Tipped";
     if (tx.status === "pending") return "Sending...";
     return (
       <>
-        🔥 Tip<span className="tip-btn__amount"> 0.0001 ETH</span>
+        Tip<span className="tip-btn__amount"> 0.0001 ETH</span>
       </>
     );
   };
@@ -118,7 +118,7 @@ export function PostCard({ post, connectedAddress, readContract, writeContract, 
             {isOwn && <span className="you-badge"> (you)</span>}
           </span>
           <span className="post-stats">
-            ❤️ {post.likes.toString()} · {formatEth(post.totalEarned)} ETH
+            {post.likes.toString()} {Number(post.likes) === 1 ? "tip" : "tips"} · {formatEth(post.totalEarned)} ETH
           </span>
         </div>
 
@@ -149,13 +149,6 @@ export function PostCard({ post, connectedAddress, readContract, writeContract, 
               <span className="spinner" />
             )}
             {tipLabel()}
-            {!isOwn && !liked && tx.status !== "pending" && (
-              <>
-                <span className="flame-particle flame-particle--1" />
-                <span className="flame-particle flame-particle--2" />
-                <span className="flame-particle flame-particle--3" />
-              </>
-            )}
           </button>
 
           {tx.status === "success" && tx.txHash && (
@@ -169,7 +162,7 @@ export function PostCard({ post, connectedAddress, readContract, writeContract, 
             </a>
           )}
           {tx.status === "error" && (
-            <span className="tx-inline error">❌ {tx.message}</span>
+            <span className="tx-inline error">{tx.message}</span>
           )}
         </div>
       </div>

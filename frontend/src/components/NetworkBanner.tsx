@@ -5,7 +5,9 @@ interface Props {
 export function NetworkBanner({ onSwitch }: Props) {
   return (
     <div className="network-banner">
-      <span className="network-banner__icon">⚠️</span>
+      <span className="network-banner__icon">
+        <span className="status-dot status-dot--error" />
+      </span>
       <span className="network-banner__msg">
         Please switch to <strong>Sepolia</strong> network
       </span>

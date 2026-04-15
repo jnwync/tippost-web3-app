@@ -96,6 +96,20 @@ body {
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
+  letter-spacing: -0.02em;
+}
+
+.header-brand {
+  display: flex;
+  flex-direction: column;
+}
+
+.header-subtitle {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 500;
 }
 
 .header-right {
@@ -237,12 +251,10 @@ body {
   justify-content: center;
   gap: 0.75rem;
   text-align: center;
-  padding: 3rem 1rem;
-}
-
-.empty-state__icon {
-  font-size: 2.5rem;
-  line-height: 1;
+  padding: 4rem 1rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
 }
 
 .empty-state__title {
@@ -383,6 +395,7 @@ button {
 }
 
 .post-card:hover {
+  border-color: var(--border-hover);
   box-shadow: var(--shadow-card-hover);
   z-index: var(--z-card);
 }
@@ -473,29 +486,23 @@ button {
 
 .tip-btn {
   position: relative;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  color: var(--text);
+  background: transparent;
+  border: 1px solid var(--ember-red);
+  color: var(--ember-red);
   border-radius: var(--radius-btn);
   padding: 0.5rem 1.2rem;
   font-size: 0.85rem;
   font-weight: 600;
   cursor: pointer;
   overflow: visible;
-  transition: background 0.15s, border-color 0.15s, box-shadow 0.15s;
-  box-shadow: var(--shadow-ember-btn);
+  transition: background 0.2s, border-color 0.2s, color 0.2s, box-shadow 0.2s;
 }
 
 .tip-btn:hover:not(:disabled) {
   background: var(--ember-gradient);
-  border-color: var(--ember-red);
+  border-color: transparent;
   color: #fff;
   box-shadow: var(--shadow-ember-hover);
-}
-
-.tip-btn:hover:not(:disabled) .flame-particle {
-  opacity: 1;
-  animation-duration: 1.5s;
 }
 
 .tip-btn:disabled {
@@ -514,50 +521,6 @@ button {
   opacity: 0.5;
   cursor: not-allowed;
   box-shadow: none;
-}
-
-.tip-btn--burst .flame-particle {
-  animation: flame-burst 400ms ease-out forwards !important;
-}
-
-.flame-particle {
-  position: absolute;
-  width: 4px;
-  height: 4px;
-  border-radius: 50%;
-  top: -2px;
-  opacity: 0.4;
-  animation: flame-float 3s ease-in-out infinite;
-  pointer-events: none;
-}
-
-.flame-particle--1 {
-  left: calc(50% - 8px);
-  background: var(--ember-orange);
-  animation-delay: 0s;
-}
-
-.flame-particle--2 {
-  left: 50%;
-  background: var(--ember-red);
-  animation-delay: 0.8s;
-}
-
-.flame-particle--3 {
-  left: calc(50% + 8px);
-  background: var(--ember-gold);
-  animation-delay: 1.6s;
-}
-
-@keyframes flame-float {
-  0%   { transform: translateY(0) translateX(0); opacity: 0.4; }
-  50%  { opacity: 0.6; }
-  100% { transform: translateY(-20px) translateX(3px); opacity: 0; }
-}
-
-@keyframes flame-burst {
-  0%   { transform: translateY(0); opacity: 1; }
-  100% { transform: translateY(-30px); opacity: 0; }
 }
 
 .error-text {
@@ -695,12 +658,39 @@ button {
   100% { background-position: -200% 0; }
 }
 
+.status-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.status-dot--success {
+  background: var(--success);
+  box-shadow: 0 0 6px var(--success);
+}
+
+.status-dot--error {
+  background: var(--error);
+  box-shadow: 0 0 6px var(--error);
+}
+
 .tx-inline {
   font-size: 0.82rem;
 }
 
 .tx-inline.success { color: var(--success); }
 .tx-inline.error   { color: var(--error); }
+
+.footer {
+  text-align: center;
+  padding: 3rem 0 1rem;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  border-top: 1px solid var(--border);
+  margin-top: 3rem;
+}
 
 @media (max-width: 480px) {
   .app {
