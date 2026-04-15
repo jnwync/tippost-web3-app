@@ -1,5 +1,6 @@
 import type { Contract } from "ethers";
 import type { Post } from "../types/post";
+import type { AppTx } from "../hooks/useTxState";
 import { PostCard } from "./PostCard";
 
 interface Props {
@@ -8,9 +9,10 @@ interface Props {
   readContract: Contract;
   writeContract: Contract | null;
   onLikeSuccess: () => void;
+  appTx: AppTx;
 }
 
-export function PostFeed({ posts, connectedAddress, readContract, writeContract, onLikeSuccess }: Props) {
+export function PostFeed({ posts, connectedAddress, readContract, writeContract, onLikeSuccess, appTx }: Props) {
   return (
     <div className="post-feed">
       {posts.map((post) => (
@@ -21,6 +23,7 @@ export function PostFeed({ posts, connectedAddress, readContract, writeContract,
           readContract={readContract}
           writeContract={writeContract}
           onLikeSuccess={onLikeSuccess}
+          appTx={appTx}
         />
       ))}
     </div>

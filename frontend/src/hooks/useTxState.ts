@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 
 export type TxStatus = "idle" | "pending" | "success" | "error";
 
@@ -8,20 +8,26 @@ export interface TxState {
   txHash?: string;
 }
 
+export interface AppTx {
+  setPending: () => void;
+  setSuccess: (msg?: string, hash?: string) => void;
+  setError: (msg: string) => void;
+}
+
 export function useTxState() {
   const [tx, setTx] = useState<TxState>({ status: "idle", message: "" });
 
-  const setPending = () =>
-    setTx({ status: "pending", message: "Waiting for confirmation..." });
+  const setPending = useCallback(() =>
+    setTx({ status: "pending", message: "Waiting for confirmation..." }), []);
 
-  const setSuccess = (msg = "Transaction confirmed!", txHash?: string) =>
-    setTx({ status: "success", message: msg, txHash });
+  const setSuccess = useCallback((msg = "Transaction confirmed!", txHash?: string) =>
+    setTx({ status: "success", message: msg, txHash }), []);
 
-  const setError = (msg: string) =>
-    setTx({ status: "error", message: msg });
+  const setError = useCallback((msg: string) =>
+    setTx({ status: "error", message: msg }), []);
 
-  const reset = () =>
-    setTx({ status: "idle", message: "" });
+  const reset = useCallback(() =>
+    setTx({ status: "idle", message: "" }), []);
 
   return { tx, setPending, setSuccess, setError, reset };
 }

@@ -5,6 +5,7 @@ import type { Post } from "../types/post";
 import { shortAddress, formatEth } from "../utils/format";
 import { parseEthersError } from "../utils/errors";
 import { useTxState } from "../hooks/useTxState";
+import type { AppTx } from "../hooks/useTxState";
 
 interface Props {
   post: Post;
@@ -12,9 +13,10 @@ interface Props {
   readContract: Contract;
   writeContract: Contract | null;
   onLikeSuccess: () => void;
+  appTx: AppTx;
 }
 
-export function PostCard({ post, connectedAddress, readContract, writeContract, onLikeSuccess }: Props) {
+export function PostCard({ post, connectedAddress, readContract, writeContract, onLikeSuccess, appTx }: Props) {
   const isOwn =
     !!connectedAddress &&
     connectedAddress.toLowerCase() === post.creator.toLowerCase();
@@ -35,6 +37,7 @@ export function PostCard({ post, connectedAddress, readContract, writeContract, 
     if (!writeContract || isOwn || liked) return;
     reset();
     setPending();
+    appTx.setPending();
     try {
       const txResponse = await writeContract.likePost(post.id, {
         value: parseEther("0.0001"),
@@ -42,9 +45,12 @@ export function PostCard({ post, connectedAddress, readContract, writeContract, 
       await txResponse.wait();
       setLiked(true);
       setSuccess("Tip sent!", txResponse.hash);
+      appTx.setSuccess("Tip sent!", txResponse.hash);
       setTimeout(onLikeSuccess, 1500);
     } catch (err) {
-      setError(parseEthersError(err));
+      const msg = parseEthersError(err);
+      setError(msg);
+      appTx.setError(msg);
     }
   };
 

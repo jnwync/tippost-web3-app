@@ -1,14 +1,16 @@
 import { useState } from "react";
 import type { Contract } from "ethers";
 import { useTxState } from "../hooks/useTxState";
+import type { AppTx } from "../hooks/useTxState";
 import { parseEthersError } from "../utils/errors";
 
 interface Props {
   writeContract: Contract;
   onSuccess: () => void;
+  appTx: AppTx;
 }
 
-export function CreatePostForm({ writeContract, onSuccess }: Props) {
+export function CreatePostForm({ writeContract, onSuccess, appTx }: Props) {
   const [imageUrl, setImageUrl] = useState("");
   const [caption, setCaption] = useState("");
   const { tx, setPending, setSuccess, setError, reset } = useTxState();
@@ -19,16 +21,19 @@ export function CreatePostForm({ writeContract, onSuccess }: Props) {
 
     reset();
     setPending();
+    appTx.setPending();
     try {
       const txResponse = await writeContract.createPost(imageUrl.trim(), caption.trim());
       await txResponse.wait();
       setSuccess("Post created!", txResponse.hash);
+      appTx.setSuccess("Post created!", txResponse.hash);
       setImageUrl("");
       setCaption("");
-      // Delay refetch so the success banner is visible before the feed reloads
       setTimeout(onSuccess, 1500);
     } catch (err) {
-      setError(parseEthersError(err));
+      const msg = parseEthersError(err);
+      setError(msg);
+      appTx.setError(msg);
     }
   };
 
@@ -64,21 +69,6 @@ export function CreatePostForm({ writeContract, onSuccess }: Props) {
         {tx.status === "pending" ? "Posting..." : "Post"}
       </button>
 
-      {tx.status === "success" && (
-        <p className="tx-msg success">
-          ✅ {tx.message}
-          {tx.txHash && (
-            <a
-              href={`https://sepolia.etherscan.io/tx/${tx.txHash}`}
-              target="_blank"
-              rel="noreferrer"
-              className="tx-link"
-            >
-              View on Etherscan
-            </a>
-          )}
-        </p>
-      )}
       {tx.status === "error" && (
         <p className="tx-msg error">
           ❌ {tx.message}{" "}
