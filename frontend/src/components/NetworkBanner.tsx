@@ -5,8 +5,13 @@ interface Props {
 export function NetworkBanner({ onSwitch }: Props) {
   return (
     <div className="network-banner">
-      ⚠️ Please switch to <strong>Sepolia</strong> testnet to use TipPost.
-      <button onClick={onSwitch}>Switch Network</button>
+      <span className="network-banner__icon">⚠️</span>
+      <span className="network-banner__msg">
+        Please switch to <strong>Sepolia</strong> network
+      </span>
+      <button className="network-banner__btn" onClick={onSwitch}>
+        Switch Network
+      </button>
     </div>
   );
 }

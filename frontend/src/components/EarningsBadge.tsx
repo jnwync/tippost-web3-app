@@ -20,7 +20,8 @@ export function EarningsBadge({ readContract, address, refreshKey }: Props) {
 
   return (
     <span className="earnings-badge" title="Your total ETH earned from tips">
-      💰 {formatEth(earned)} earned
+      <span className="earnings-dot" />
+      {formatEth(earned)} ETH earned
     </span>
   );
 }

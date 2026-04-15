@@ -10,6 +10,7 @@ import { CreatePostForm } from "./components/CreatePostForm";
 import { PostFeed } from "./components/PostFeed";
 import { EarningsBadge } from "./components/EarningsBadge";
 import { TxToast } from "./components/TxToast";
+import { EmptyState } from "./components/EmptyState";
 
 function App() {
   const { address, chainId, provider, connect } = useWallet();
@@ -25,7 +26,6 @@ function App() {
     setEarningsKey((k) => k + 1);
   }, [refetch]);
 
-  // Expose app-level tx callbacks to child forms/cards via props
   const appTx = { setPending, setSuccess, setError };
 
   const canInteract = !!address && isCorrectNetwork;
@@ -33,7 +33,7 @@ function App() {
   return (
     <div className="app">
       <header className="header">
-        <h1>TipPost</h1>
+        <h1>TipPost 🔥</h1>
         <div className="header-right">
           {canInteract && address && (
             <EarningsBadge
@@ -54,7 +54,11 @@ function App() {
 
       <main className="main">
         {!address && (
-          <p className="hint">Connect your wallet to create and like posts.</p>
+          <EmptyState
+            icon="👛"
+            title="Connect your wallet to start tipping"
+            action={{ label: "Connect Wallet", onClick: connect }}
+          />
         )}
 
         {canInteract && writeContract && (
@@ -65,11 +69,21 @@ function App() {
           />
         )}
 
-        {error && <p className="hint error-text">⚠️ {error}</p>}
+        {error && (
+          <EmptyState
+            icon="⚠️"
+            title="Failed to load posts"
+            subtitle={error}
+          />
+        )}
         {loading && <p className="hint">Loading posts...</p>}
 
         {!loading && !error && posts.length === 0 && (
-          <p className="hint">No posts yet. Be the first to post!</p>
+          <EmptyState
+            icon="🔥"
+            title="No posts yet. Be the first to share!"
+            subtitle="Connect your wallet and create a post above"
+          />
         )}
 
         {!loading && posts.length > 0 && (

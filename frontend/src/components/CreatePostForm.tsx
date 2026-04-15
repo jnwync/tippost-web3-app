@@ -39,7 +39,7 @@ export function CreatePostForm({ writeContract, onSuccess, appTx }: Props) {
 
   return (
     <form className="create-form" onSubmit={handleSubmit}>
-      <h2 className="form-title">Create Post</h2>
+      <h2 className="form-title">✨ Create Post</h2>
 
       <input
         className="form-input"
@@ -66,7 +66,13 @@ export function CreatePostForm({ writeContract, onSuccess, appTx }: Props) {
         type="submit"
         disabled={tx.status === "pending" || !imageUrl.trim() || !caption.trim()}
       >
-        {tx.status === "pending" ? "Posting..." : "Post"}
+        {tx.status === "pending" ? (
+          <>
+            <span className="spinner" /> Posting...
+          </>
+        ) : (
+          "Post 🔥"
+        )}
       </button>
 
       {tx.status === "error" && (

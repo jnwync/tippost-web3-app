@@ -4,13 +4,18 @@ interface Props {
 }
 
 export function ConnectButton({ address, onConnect }: Props) {
-  const short = address
-    ? `${address.slice(0, 6)}...${address.slice(-4)}`
-    : null;
+  if (address) {
+    const short = `${address.slice(0, 6)}...${address.slice(-4)}`;
+    return (
+      <span className="wallet-pill" title={address}>
+        {short}
+      </span>
+    );
+  }
 
   return (
-    <button className="connect-btn" onClick={onConnect} disabled={!!address}>
-      {short ?? "Connect Wallet"}
+    <button className="connect-btn" onClick={onConnect}>
+      Connect Wallet
     </button>
   );
 }
