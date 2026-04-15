@@ -1,3 +1,4 @@
+import { useState, useCallback } from "react";
 import { useWallet } from "./hooks/useWallet";
 import { useNetworkGuard } from "./hooks/useNetworkGuard";
 import { useContract } from "./hooks/useContract";
@@ -6,6 +7,7 @@ import { ConnectButton } from "./components/ConnectButton";
 import { NetworkBanner } from "./components/NetworkBanner";
 import { CreatePostForm } from "./components/CreatePostForm";
 import { PostFeed } from "./components/PostFeed";
+import { EarningsBadge } from "./components/EarningsBadge";
 
 function App() {
   const { address, chainId, provider, connect } = useWallet();
@@ -13,13 +15,30 @@ function App() {
   const { readContract, writeContract } = useContract(provider);
   const { posts, loading, error, refetch } = usePosts(readContract);
 
+  // Incrementing this causes EarningsBadge to re-read from chain
+  const [earningsKey, setEarningsKey] = useState(0);
+
+  const handleTxSuccess = useCallback(() => {
+    refetch();
+    setEarningsKey((k) => k + 1);
+  }, [refetch]);
+
   const canInteract = !!address && isCorrectNetwork;
 
   return (
     <div className="app">
       <header className="header">
         <h1>TipPost</h1>
-        <ConnectButton address={address} onConnect={connect} />
+        <div className="header-right">
+          {canInteract && address && (
+            <EarningsBadge
+              readContract={readContract}
+              address={address}
+              refreshKey={earningsKey}
+            />
+          )}
+          <ConnectButton address={address} onConnect={connect} />
+        </div>
       </header>
 
       {address && !isCorrectNetwork && (
@@ -32,7 +51,7 @@ function App() {
         )}
 
         {canInteract && writeContract && (
-          <CreatePostForm writeContract={writeContract} onSuccess={refetch} />
+          <CreatePostForm writeContract={writeContract} onSuccess={handleTxSuccess} />
         )}
 
         {error && <p className="hint error-text">⚠️ {error}</p>}
@@ -43,7 +62,13 @@ function App() {
         )}
 
         {!loading && posts.length > 0 && (
-          <PostFeed posts={posts} connectedAddress={address} />
+          <PostFeed
+            posts={posts}
+            connectedAddress={address}
+            readContract={readContract}
+            writeContract={writeContract}
+            onLikeSuccess={handleTxSuccess}
+          />
         )}
       </main>
     </div>

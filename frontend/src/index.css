@@ -34,6 +34,8 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem;
   padding: 1.25rem 0;
   border-bottom: 1px solid var(--border);
   margin-bottom: 1.5rem;
@@ -253,3 +255,64 @@ button {
 .error-text {
   color: var(--danger);
 }
+
+/* Header right cluster */
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+/* Earnings badge */
+.earnings-badge {
+  font-size: 0.8rem;
+  color: var(--success);
+  background: #0d2016;
+  border: 1px solid var(--success);
+  border-radius: 20px;
+  padding: 0.25rem 0.7rem;
+  white-space: nowrap;
+}
+
+/* Post actions (like button row) */
+.post-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-top: 0.25rem;
+}
+
+.like-btn {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text);
+  border-radius: 8px;
+  padding: 0.4rem 0.85rem;
+  font-size: 0.85rem;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.like-btn:hover:not(:disabled) {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.like-btn.liked {
+  border-color: #e05c8a;
+  color: #e05c8a;
+  background: #1f0d14;
+}
+
+.like-btn.own,
+.like-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.tx-inline {
+  font-size: 0.8rem;
+}
+
+.tx-inline.success { color: var(--success); }
+.tx-inline.error   { color: var(--danger); }

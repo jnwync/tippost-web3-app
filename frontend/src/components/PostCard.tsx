@@ -1,13 +1,62 @@
+import { useState, useEffect } from "react";
+import type { Contract } from "ethers";
+import { parseEther } from "ethers";
 import type { Post } from "../types/post";
 import { shortAddress, formatEth } from "../utils/format";
+import { parseEthersError } from "../utils/errors";
+import { useTxState } from "../hooks/useTxState";
 
 interface Props {
   post: Post;
   connectedAddress: string | null;
+  readContract: Contract;
+  writeContract: Contract | null;
+  onLikeSuccess: () => void;
 }
 
-export function PostCard({ post, connectedAddress }: Props) {
-  const isOwn = connectedAddress?.toLowerCase() === post.creator.toLowerCase();
+export function PostCard({ post, connectedAddress, readContract, writeContract, onLikeSuccess }: Props) {
+  const isOwn =
+    !!connectedAddress &&
+    connectedAddress.toLowerCase() === post.creator.toLowerCase();
+
+  const [liked, setLiked] = useState(false);
+  const { tx, setPending, setSuccess, setError, reset } = useTxState();
+
+  // Check if connected address has already liked this post
+  useEffect(() => {
+    if (!connectedAddress) return;
+    readContract
+      .checkLiked(post.id, connectedAddress)
+      .then((v: boolean) => setLiked(v))
+      .catch(() => setLiked(false));
+  }, [readContract, post.id, connectedAddress]);
+
+  const handleLike = async () => {
+    if (!writeContract || isOwn || liked) return;
+    reset();
+    setPending();
+    try {
+      const txResponse = await writeContract.likePost(post.id, {
+        value: parseEther("0.0001"),
+      });
+      await txResponse.wait();
+      setLiked(true);
+      setSuccess("Tip sent!", txResponse.hash);
+      setTimeout(onLikeSuccess, 1500);
+    } catch (err) {
+      setError(parseEthersError(err));
+    }
+  };
+
+  const likeDisabled =
+    !writeContract || isOwn || liked || tx.status === "pending";
+
+  const likeLabel = () => {
+    if (isOwn) return "Your post";
+    if (liked) return "❤️ Liked";
+    if (tx.status === "pending") return "Sending...";
+    return "🤍 Like (0.0001 ETH)";
+  };
 
   return (
     <div className="post-card">
@@ -30,6 +79,35 @@ export function PostCard({ post, connectedAddress }: Props) {
           <span className="post-stats">
             ❤️ {post.likes.toString()} · {formatEth(post.totalEarned)} earned
           </span>
+        </div>
+
+        <div className="post-actions">
+          <button
+            className={`like-btn ${liked ? "liked" : ""} ${isOwn ? "own" : ""}`}
+            onClick={handleLike}
+            disabled={likeDisabled}
+          >
+            {likeLabel()}
+          </button>
+
+          {tx.status === "success" && (
+            <span className="tx-inline success">
+              ✅ {tx.message}{" "}
+              {tx.txHash && (
+                <a
+                  href={`https://sepolia.etherscan.io/tx/${tx.txHash}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="tx-link"
+                >
+                  Etherscan ↗
+                </a>
+              )}
+            </span>
+          )}
+          {tx.status === "error" && (
+            <span className="tx-inline error">❌ {tx.message}</span>
+          )}
         </div>
       </div>
     </div>
