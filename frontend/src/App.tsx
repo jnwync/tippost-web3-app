@@ -9,7 +9,7 @@ import { NetworkBanner } from "./components/NetworkBanner";
 import { CreatePostForm } from "./components/CreatePostForm";
 import { PostFeed } from "./components/PostFeed";
 import { EarningsBadge } from "./components/EarningsBadge";
-import { TxToast } from "./components/TxToast";
+import { TxStatusBar } from "./components/TxStatusBar";
 import { EmptyState } from "./components/EmptyState";
 
 function App() {
@@ -50,7 +50,7 @@ function App() {
         <NetworkBanner onSwitch={switchNetwork} />
       )}
 
-      <TxToast tx={tx} onDismiss={reset} />
+      <TxStatusBar tx={tx} onDismiss={reset} />
 
       <main className="main">
         {!address && (
@@ -73,10 +73,21 @@ function App() {
           <EmptyState
             icon="⚠️"
             title="Failed to load posts"
-            subtitle={error}
+            action={{ label: "Try again", onClick: refetch, variant: "ghost" }}
           />
         )}
-        {loading && <p className="hint">Loading posts...</p>}
+
+        {loading && (
+          <PostFeed
+            posts={[]}
+            connectedAddress={address}
+            readContract={readContract}
+            writeContract={writeContract}
+            onLikeSuccess={handleTxSuccess}
+            appTx={appTx}
+            loading
+          />
+        )}
 
         {!loading && !error && posts.length === 0 && (
           <EmptyState

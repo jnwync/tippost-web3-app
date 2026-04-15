@@ -5,6 +5,7 @@ interface Props {
   action?: {
     label: string;
     onClick: () => void;
+    variant?: "primary" | "ghost";
   };
 }
 
@@ -15,7 +16,10 @@ export function EmptyState({ icon, title, subtitle, action }: Props) {
       <p className="empty-state__title">{title}</p>
       {subtitle && <p className="empty-state__subtitle">{subtitle}</p>}
       {action && (
-        <button className="connect-btn" onClick={action.onClick}>
+        <button
+          className={action.variant === "ghost" ? "ghost-btn" : "connect-btn"}
+          onClick={action.onClick}
+        >
           {action.label}
         </button>
       )}

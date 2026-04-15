@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import type { Contract } from "ethers";
 import { parseEther } from "ethers";
 import type { Post } from "../types/post";
@@ -14,17 +14,21 @@ interface Props {
   writeContract: Contract | null;
   onLikeSuccess: () => void;
   appTx: AppTx;
+  entranceDelay?: number;
 }
 
-export function PostCard({ post, connectedAddress, readContract, writeContract, onLikeSuccess, appTx }: Props) {
+export function PostCard({ post, connectedAddress, readContract, writeContract, onLikeSuccess, appTx, entranceDelay = 0 }: Props) {
   const isOwn =
     !!connectedAddress &&
     connectedAddress.toLowerCase() === post.creator.toLowerCase();
 
   const [liked, setLiked] = useState(false);
+  const [burst, setBurst] = useState(false);
+  const [imgError, setImgError] = useState(false);
+  const burstTimer = useRef<ReturnType<typeof setTimeout>>();
+
   const { tx, setPending, setSuccess, setError, reset } = useTxState();
 
-  // Check if connected address has already liked this post
   useEffect(() => {
     if (!connectedAddress) return;
     readContract
@@ -32,6 +36,12 @@ export function PostCard({ post, connectedAddress, readContract, writeContract, 
       .then((v: boolean) => setLiked(v))
       .catch(() => setLiked(false));
   }, [readContract, post.id, connectedAddress]);
+
+  useEffect(() => {
+    return () => {
+      if (burstTimer.current) clearTimeout(burstTimer.current);
+    };
+  }, []);
 
   const handleLike = async () => {
     if (!writeContract || isOwn || liked) return;
@@ -46,6 +56,8 @@ export function PostCard({ post, connectedAddress, readContract, writeContract, 
       setLiked(true);
       setSuccess("Tip sent!", txResponse.hash);
       appTx.setSuccess("Tip sent!", txResponse.hash);
+      setBurst(true);
+      burstTimer.current = setTimeout(() => setBurst(false), 400);
       setTimeout(onLikeSuccess, 1500);
     } catch (err) {
       const msg = parseEthersError(err);
@@ -57,24 +69,41 @@ export function PostCard({ post, connectedAddress, readContract, writeContract, 
   const likeDisabled =
     !writeContract || isOwn || liked || tx.status === "pending";
 
-  const likeLabel = () => {
-    if (isOwn) return "Your post";
-    if (liked) return "❤️ Liked";
+  const cardClasses = [
+    "post-card",
+    tx.status === "pending" && "post-card--pending",
+    burst && "post-card--success",
+  ].filter(Boolean).join(" ");
+
+  const tipBtnClasses = [
+    "tip-btn",
+    liked && "tip-btn--liked",
+    isOwn && "tip-btn--own",
+    burst && "tip-btn--burst",
+  ].filter(Boolean).join(" ");
+
+  const tipLabel = () => {
+    if (isOwn) return "🔥 Your post";
+    if (liked) return "❤️‍🔥 Tipped!";
     if (tx.status === "pending") return "Sending...";
-    return "🤍 Like (0.0001 ETH)";
+    return "🔥 Tip 0.0001 ETH";
   };
 
   return (
-    <div className="post-card">
-      <img
-        src={post.imageUrl}
-        alt={post.caption}
-        className="post-img"
-        onError={(e) => {
-          (e.currentTarget as HTMLImageElement).src =
-            "https://placehold.co/600x400/1a1a1a/888?text=Image+not+found";
-        }}
-      />
+    <div
+      className={cardClasses}
+      style={{ animationDelay: `${entranceDelay}ms` }}
+    >
+      {imgError ? (
+        <div className="post-img-placeholder" />
+      ) : (
+        <img
+          src={post.imageUrl}
+          alt={post.caption}
+          className="post-img"
+          onError={() => setImgError(true)}
+        />
+      )}
       <div className="post-body">
         <p className="post-caption">{post.caption}</p>
         <div className="post-meta">
@@ -83,33 +112,45 @@ export function PostCard({ post, connectedAddress, readContract, writeContract, 
             {isOwn && <span className="you-badge"> (you)</span>}
           </span>
           <span className="post-stats">
-            ❤️ {post.likes.toString()} · {formatEth(post.totalEarned)} earned
+            ❤️ {post.likes.toString()} · {formatEth(post.totalEarned)} ETH
           </span>
         </div>
 
         <div className="post-actions">
           <button
-            className={`like-btn ${liked ? "liked" : ""} ${isOwn ? "own" : ""}`}
+            className={tipBtnClasses}
             onClick={handleLike}
             disabled={likeDisabled}
+            aria-label={
+              isOwn
+                ? "Your own post"
+                : liked
+                  ? "Already tipped"
+                  : `Tip 0.0001 ETH to ${shortAddress(post.creator)}`
+            }
           >
-            {likeLabel()}
+            {tx.status === "pending" && (
+              <span className="spinner" />
+            )}
+            {tipLabel()}
+            {!isOwn && !liked && tx.status !== "pending" && (
+              <>
+                <span className="flame-particle flame-particle--1" />
+                <span className="flame-particle flame-particle--2" />
+                <span className="flame-particle flame-particle--3" />
+              </>
+            )}
           </button>
 
-          {tx.status === "success" && (
-            <span className="tx-inline success">
-              ✅ {tx.message}{" "}
-              {tx.txHash && (
-                <a
-                  href={`https://sepolia.etherscan.io/tx/${tx.txHash}`}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="tx-link"
-                >
-                  Etherscan ↗
-                </a>
-              )}
-            </span>
+          {tx.status === "success" && tx.txHash && (
+            <a
+              href={`https://sepolia.etherscan.io/tx/${tx.txHash}`}
+              target="_blank"
+              rel="noreferrer"
+              className="tx-link"
+            >
+              Etherscan ↗
+            </a>
           )}
           {tx.status === "error" && (
             <span className="tx-inline error">❌ {tx.message}</span>
