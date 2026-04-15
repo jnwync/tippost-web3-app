@@ -1,4 +1,5 @@
 import { useState, useCallback } from "react";
+import { Wallet, AlertTriangle, Inbox } from "lucide-react";
 import { useWallet } from "./hooks/useWallet";
 import { useNetworkGuard } from "./hooks/useNetworkGuard";
 import { useContract } from "./hooks/useContract";
@@ -58,6 +59,7 @@ function App() {
       <main className="main">
         {!address && (
           <EmptyState
+            icon={<Wallet size={32} />}
             title="Connect your wallet to start tipping"
             subtitle="Post images and tip creators with ETH on Sepolia"
             action={{ label: "Connect Wallet", onClick: connect }}
@@ -74,6 +76,7 @@ function App() {
 
         {error && (
           <EmptyState
+            icon={<AlertTriangle size={32} />}
             title="Failed to load posts"
             subtitle="There was a problem connecting to the network"
             action={{ label: "Try again", onClick: refetch, variant: "ghost" }}
@@ -94,6 +97,7 @@ function App() {
 
         {!loading && !error && posts.length === 0 && (
           <EmptyState
+            icon={<Inbox size={32} />}
             title="No posts yet"
             subtitle="Be the first to share — create a post above"
           />

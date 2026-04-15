@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { CheckCircle, AlertCircle, ExternalLink, X } from "lucide-react";
 import type { TxState } from "../hooks/useTxState";
 
 interface Props {
@@ -46,8 +47,8 @@ export function TxStatusBar({ tx, onDismiss }: Props) {
     >
       <span className="tx-status-bar__left">
         {tx.status === "pending" && <span className="spinner" />}
-        {tx.status === "success" && <span className="status-dot status-dot--success" />}
-        {tx.status === "error" && <span className="status-dot status-dot--error" />}
+        {tx.status === "success" && <CheckCircle size={14} />}
+        {tx.status === "error" && <AlertCircle size={14} />}
         <span className="tx-status-bar__msg">
           {tx.status === "pending" && "Sending tip — waiting for confirmation..."}
           {tx.status === "success" && "Tip sent successfully!"}
@@ -62,7 +63,7 @@ export function TxStatusBar({ tx, onDismiss }: Props) {
             rel="noreferrer"
             className="tx-status-bar__link"
           >
-            Etherscan ↗
+            <ExternalLink size={12} /> Etherscan
           </a>
         )}
         {tx.status !== "pending" && (
@@ -71,7 +72,7 @@ export function TxStatusBar({ tx, onDismiss }: Props) {
             onClick={onDismiss}
             aria-label="Dismiss"
           >
-            ✕
+            <X size={14} />
           </button>
         )}
       </span>

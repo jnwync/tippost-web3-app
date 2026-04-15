@@ -1,3 +1,5 @@
+import { AlertTriangle } from "lucide-react";
+
 interface Props {
   onSwitch: () => void;
 }
@@ -5,9 +7,7 @@ interface Props {
 export function NetworkBanner({ onSwitch }: Props) {
   return (
     <div className="network-banner">
-      <span className="network-banner__icon">
-        <span className="status-dot status-dot--error" />
-      </span>
+      <AlertTriangle size={16} className="network-banner__icon" />
       <span className="network-banner__msg">
         Please switch to <strong>Sepolia</strong> network
       </span>

@@ -1,15 +1,15 @@
 :root {
   --bg:              #0a0a14;
   --bg-elevated:     #0d0818;
-  --surface:         rgba(255, 255, 255, 0.02);
-  --surface-hover:   rgba(255, 255, 255, 0.04);
+  --surface:         rgba(255, 255, 255, 0.03);
+  --surface-hover:   rgba(255, 255, 255, 0.06);
 
-  --border:          rgba(255, 255, 255, 0.06);
-  --border-hover:    rgba(255, 255, 255, 0.1);
+  --border:          rgba(255, 255, 255, 0.08);
+  --border-hover:    rgba(255, 255, 255, 0.15);
 
   --text:            #e8e8e8;
-  --text-secondary:  #888888;
-  --text-muted:      #555555;
+  --text-secondary:  #999999;
+  --text-muted:      #666666;
 
   --ember-red:       #ff6b6b;
   --ember-orange:    #ffa94d;
@@ -28,18 +28,18 @@
   --pending-bg:      rgba(255, 168, 77, 0.08);
   --pending-border:  rgba(255, 168, 77, 0.15);
   --liked:           #ff6b8a;
-  --liked-bg:        rgba(255, 107, 138, 0.12);
-  --liked-border:    rgba(255, 107, 138, 0.3);
+  --liked-bg:        rgba(255, 107, 138, 0.1);
+  --liked-border:    rgba(255, 107, 138, 0.25);
 
-  --radius-card:     16px;
-  --radius-btn:      10px;
-  --radius-input:    10px;
+  --radius-card:     12px;
+  --radius-btn:      8px;
+  --radius-input:    8px;
   --radius-pill:     20px;
-  --radius-chip:     8px;
+  --radius-chip:     6px;
 
-  --shadow-card-hover:    0 4px 20px rgba(0, 0, 0, 0.3);
-  --shadow-ember-btn:     0 0 15px rgba(255, 107, 107, 0.15);
-  --shadow-ember-hover:   0 0 25px rgba(255, 107, 107, 0.25);
+  --shadow-card-hover:    0 4px 24px rgba(0, 0, 0, 0.4);
+  --shadow-ember-btn:     0 0 12px rgba(255, 107, 107, 0.12);
+  --shadow-ember-hover:   0 0 20px rgba(255, 107, 107, 0.2);
   --shadow-pending:       0 0 25px rgba(255, 107, 107, 0.1), 0 0 50px rgba(255, 168, 77, 0.05);
   --shadow-success:       0 0 20px rgba(92, 224, 122, 0.1);
 
@@ -49,7 +49,7 @@
   --z-status:    100;
   --z-modal:     200;
 
-  --font-sans:     -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-sans:     "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --font-mono:     "SF Mono", "Fira Code", "Cascadia Code", monospace;
 }
 
@@ -63,52 +63,59 @@ body {
   background: var(--bg);
   color: var(--text);
   font-family: var(--font-sans);
-  font-size: 0.92rem;
-  line-height: 1.5;
+  font-size: 0.875rem;
+  line-height: 1.6;
   min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
 }
 
+/* ── Layout ── */
+
 .app {
-  max-width: 680px;
+  max-width: 640px;
   margin: 0 auto;
-  padding: 0 1rem 4rem;
+  padding: 0 1.25rem 4rem;
 }
+
+/* ── Header ── */
 
 .header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
-  gap: 0.5rem;
-  padding: 1.25rem 0;
+  gap: 0.75rem;
+  padding: 1.5rem 0;
   border-bottom: 1px solid var(--border);
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
   position: sticky;
   top: 0;
-  background: var(--bg-elevated);
+  background: var(--bg);
   z-index: var(--z-header);
+  backdrop-filter: blur(12px);
 }
 
 .header h1 {
-  font-size: 1.5rem;
-  font-weight: 800;
+  font-size: 1.4rem;
+  font-weight: 700;
   background: var(--ember-gradient-full);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.03em;
 }
 
 .header-brand {
   display: flex;
   flex-direction: column;
+  gap: 0.1rem;
 }
 
 .header-subtitle {
-  font-size: 0.7rem;
+  font-size: 0.65rem;
   color: var(--text-muted);
   text-transform: uppercase;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.1em;
   font-weight: 500;
 }
 
@@ -118,21 +125,27 @@ body {
   gap: 0.75rem;
 }
 
+/* ── Buttons ── */
+
 .connect-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
   background: var(--ember-gradient);
   color: #fff;
   border: none;
   border-radius: var(--radius-btn);
-  padding: 0.5rem 1.2rem;
-  font-size: 0.92rem;
+  padding: 0.5rem 1.1rem;
+  font-size: 0.85rem;
   font-weight: 600;
   cursor: pointer;
   box-shadow: var(--shadow-ember-btn);
-  transition: box-shadow 0.15s, opacity 0.15s;
+  transition: box-shadow 0.2s, transform 0.15s;
 }
 
 .connect-btn:hover:not(:disabled) {
   box-shadow: var(--shadow-ember-hover);
+  transform: translateY(-1px);
 }
 
 .connect-btn:disabled {
@@ -141,57 +154,60 @@ body {
   cursor: default;
   border: 1px solid var(--border);
   box-shadow: none;
+  transform: none;
 }
 
 .ghost-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
   background: none;
   color: var(--text);
-  border: 1px solid var(--ember-red);
+  border: 1px solid var(--border-hover);
   border-radius: var(--radius-btn);
-  padding: 0.5rem 1.2rem;
-  font-size: 0.92rem;
+  padding: 0.5rem 1.1rem;
+  font-size: 0.85rem;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.15s, color 0.15s;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
 }
 
 .ghost-btn:hover {
-  background: var(--ember-glow);
+  background: var(--surface-hover);
+  border-color: var(--ember-red);
   color: var(--ember-red);
 }
 
+/* ── Earnings badge ── */
+
 .earnings-badge {
-  font-size: 0.82rem;
+  font-size: 0.78rem;
   color: var(--success);
   background: var(--success-bg);
   border: 1px solid var(--success-border);
   border-radius: var(--radius-pill);
-  padding: 0.25rem 0.7rem;
+  padding: 0.25rem 0.65rem;
   white-space: nowrap;
   display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
+  gap: 0.35rem;
 }
 
-.earnings-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--success);
-  flex-shrink: 0;
-}
+/* ── Wallet pill ── */
 
 .wallet-pill {
   font-family: var(--font-mono);
   font-size: 0.75rem;
   color: var(--text-secondary);
-  background: rgba(255, 107, 107, 0.06);
-  border: 1px solid rgba(255, 107, 107, 0.15);
+  background: var(--surface);
+  border: 1px solid var(--border);
   border-radius: var(--radius-pill);
   padding: 0.35rem 0.75rem;
   white-space: nowrap;
   user-select: all;
 }
+
+/* ── Network banner ── */
 
 .network-banner {
   background: var(--error-bg);
@@ -201,8 +217,9 @@ body {
   margin-bottom: 1.5rem;
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  font-size: 0.92rem;
+  gap: 0.6rem;
+  font-size: 0.85rem;
+  color: var(--error);
   animation: slide-down 0.2s ease;
 }
 
@@ -212,6 +229,7 @@ body {
 
 .network-banner__msg {
   flex: 1;
+  color: var(--text);
 }
 
 .network-banner__btn {
@@ -221,9 +239,9 @@ body {
   border: 1px solid var(--error-border);
   border-radius: var(--radius-chip);
   padding: 0.35rem 0.8rem;
-  font-size: 0.82rem;
+  font-size: 0.78rem;
   cursor: pointer;
-  transition: background 0.15s;
+  transition: background 0.2s;
   white-space: nowrap;
 }
 
@@ -231,34 +249,36 @@ body {
   background: var(--error-bg);
 }
 
+/* ── Main layout ── */
+
 .main {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
 }
 
-.hint {
-  color: var(--text-muted);
-  text-align: center;
-  margin-top: 3rem;
-  font-size: 0.92rem;
-}
+/* ── Empty state ── */
 
 .empty-state {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 0.75rem;
+  gap: 1rem;
   text-align: center;
-  padding: 4rem 1rem;
+  padding: 4rem 1.5rem;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-card);
 }
 
+.empty-state__icon {
+  color: var(--text-muted);
+  opacity: 0.6;
+}
+
 .empty-state__title {
-  font-size: 0.92rem;
+  font-size: 1rem;
   font-weight: 600;
   color: var(--text);
 }
@@ -267,18 +287,21 @@ body {
   font-size: 0.82rem;
   color: var(--text-muted);
   max-width: 320px;
+  line-height: 1.5;
 }
+
+/* ── Spinner ── */
 
 .spinner {
   display: inline-block;
   width: 14px;
   height: 14px;
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  border-top-color: #fff;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-top-color: currentColor;
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
   vertical-align: middle;
-  margin-right: 0.35rem;
+  flex-shrink: 0;
 }
 
 @keyframes spin {
@@ -294,31 +317,40 @@ button {
   cursor: pointer;
 }
 
+/* ── Create form ── */
+
 .create-form {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-card);
-  padding: 1.1rem;
+  padding: 1.25rem;
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
 }
 
 .form-title {
-  font-size: 1.1rem;
+  font-size: 1rem;
   font-weight: 600;
   color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.form-title svg {
+  color: var(--ember-orange);
 }
 
 .form-input {
   background: var(--bg);
   border: 1px solid var(--border);
   border-radius: var(--radius-input);
-  padding: 0.65rem 0.9rem;
+  padding: 0.6rem 0.85rem;
   color: var(--text);
-  font-size: 0.92rem;
+  font-size: 0.85rem;
   width: 100%;
-  transition: border-color 0.15s;
+  transition: border-color 0.2s;
 }
 
 .form-input:focus {
@@ -330,31 +362,43 @@ button {
   opacity: 0.5;
 }
 
+.form-input::placeholder {
+  color: var(--text-muted);
+}
+
 .submit-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
   background: var(--ember-gradient);
   color: #fff;
   border: none;
   border-radius: var(--radius-btn);
   padding: 0.5rem 1.2rem;
-  font-size: 0.92rem;
+  font-size: 0.85rem;
   font-weight: 600;
   align-self: flex-end;
   box-shadow: var(--shadow-ember-btn);
-  transition: box-shadow 0.15s, opacity 0.15s;
+  transition: box-shadow 0.2s, transform 0.15s, opacity 0.15s;
 }
 
 .submit-btn:hover:not(:disabled) {
   box-shadow: var(--shadow-ember-hover);
+  transform: translateY(-1px);
 }
 
 .submit-btn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
   box-shadow: none;
+  transform: none;
 }
 
+/* ── Transaction messages ── */
+
 .tx-msg {
-  font-size: 0.82rem;
+  font-size: 0.78rem;
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -365,43 +409,62 @@ button {
 .tx-msg.error   { color: var(--error); }
 
 .tx-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
   color: var(--ember-orange);
   font-size: 0.75rem;
   text-underline-offset: 2px;
+  text-decoration: none;
+  opacity: 0.8;
+  transition: opacity 0.15s;
+}
+
+.tx-link:hover {
+  opacity: 1;
+  text-decoration: underline;
 }
 
 .dismiss-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
   background: none;
   border: 1px solid var(--error-border);
   color: var(--error);
   border-radius: var(--radius-chip);
-  padding: 0.1rem 0.5rem;
-  font-size: 0.75rem;
+  padding: 0.15rem 0.5rem;
+  font-size: 0.72rem;
 }
+
+/* ── Post feed ── */
 
 .post-feed {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1.25rem;
 }
+
+/* ── Post card ── */
 
 .post-card {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-card);
   overflow: hidden;
-  transition: box-shadow 0.2s, border-color 0.3s;
+  transition: box-shadow 0.25s, border-color 0.25s, transform 0.25s;
   animation: card-enter 300ms cubic-bezier(0.4, 0, 0.2, 1) both;
 }
 
 .post-card:hover {
   border-color: var(--border-hover);
   box-shadow: var(--shadow-card-hover);
+  transform: translateY(-2px);
   z-index: var(--z-card);
 }
 
 .post-card--pending {
-  border: 2px solid var(--pending-border);
+  border: 1px solid var(--pending-border);
   box-shadow: var(--shadow-pending);
   animation: card-enter 300ms cubic-bezier(0.4, 0, 0.2, 1) both, pending-pulse 2s ease-in-out infinite;
 }
@@ -428,7 +491,7 @@ button {
 
 .post-img {
   width: 100%;
-  max-height: 360px;
+  max-height: 400px;
   object-fit: cover;
   display: block;
 }
@@ -436,44 +499,54 @@ button {
 .post-img-placeholder {
   width: 100%;
   height: 200px;
-  background: var(--ember-gradient);
-  opacity: 0.15;
+  background: linear-gradient(135deg, var(--surface) 0%, var(--surface-hover) 100%);
 }
 
 .post-body {
-  padding: 1.1rem;
+  padding: 1rem 1.25rem 1.25rem;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.6rem;
 }
 
 .post-caption {
-  font-size: 0.92rem;
+  font-size: 0.9rem;
   line-height: 1.5;
+  color: var(--text);
 }
 
 .post-meta {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 0.82rem;
+  font-size: 0.78rem;
   color: var(--text-secondary);
+  padding-top: 0.4rem;
+  border-top: 1px solid var(--border);
 }
 
 .post-creator {
   font-family: var(--font-mono);
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   color: var(--text-muted);
 }
 
 .you-badge {
   color: var(--ember-orange);
   font-family: var(--font-sans);
+  font-weight: 500;
 }
 
 .post-stats {
-  font-size: 0.82rem;
-  color: var(--ember-orange);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+}
+
+.post-stats svg {
+  color: var(--ember-red);
 }
 
 .post-actions {
@@ -484,18 +557,23 @@ button {
   margin-top: 0.25rem;
 }
 
+/* ── Tip button ── */
+
 .tip-btn {
   position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
   background: transparent;
   border: 1px solid var(--ember-red);
   color: var(--ember-red);
   border-radius: var(--radius-btn);
-  padding: 0.5rem 1.2rem;
-  font-size: 0.85rem;
+  padding: 0.45rem 1rem;
+  font-size: 0.82rem;
   font-weight: 600;
   cursor: pointer;
   overflow: visible;
-  transition: background 0.2s, border-color 0.2s, color 0.2s, box-shadow 0.2s;
+  transition: background 0.2s, border-color 0.2s, color 0.2s, box-shadow 0.2s, transform 0.15s;
 }
 
 .tip-btn:hover:not(:disabled) {
@@ -503,10 +581,12 @@ button {
   border-color: transparent;
   color: #fff;
   box-shadow: var(--shadow-ember-hover);
+  transform: translateY(-1px);
 }
 
 .tip-btn:disabled {
   box-shadow: none;
+  transform: none;
 }
 
 .tip-btn--liked {
@@ -514,18 +594,24 @@ button {
   color: var(--liked);
   background: var(--liked-bg);
   box-shadow: none;
-  cursor: not-allowed;
+  cursor: default;
 }
 
 .tip-btn--own {
-  opacity: 0.5;
-  cursor: not-allowed;
+  border-color: var(--border);
+  color: var(--text-muted);
+  opacity: 0.6;
+  cursor: default;
   box-shadow: none;
 }
+
+/* ── Error text ── */
 
 .error-text {
   color: var(--error);
 }
+
+/* ── Tx status bar ── */
 
 .tx-status-bar {
   position: fixed;
@@ -536,12 +622,13 @@ button {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 1rem;
-  font-size: 0.82rem;
+  padding: 0 1.25rem;
+  font-size: 0.78rem;
   z-index: var(--z-status);
   transform: translateY(-100%);
   opacity: 0;
   transition: transform 200ms ease, opacity 200ms ease;
+  backdrop-filter: blur(12px);
 }
 
 .tx-status-bar--visible {
@@ -588,26 +675,36 @@ button {
 }
 
 .tx-status-bar__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
   color: inherit;
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   text-underline-offset: 2px;
   white-space: nowrap;
+  text-decoration: none;
+}
+
+.tx-status-bar__link:hover {
+  text-decoration: underline;
 }
 
 .tx-status-bar__dismiss {
   background: none;
   border: none;
   color: inherit;
-  opacity: 0.6;
-  font-size: 0.75rem;
-  padding: 0 0.2rem;
+  opacity: 0.5;
+  padding: 0.15rem;
   line-height: 1;
   cursor: pointer;
+  transition: opacity 0.15s;
 }
 
 .tx-status-bar__dismiss:hover {
   opacity: 1;
 }
+
+/* ── Skeleton ── */
 
 .skeleton-card {
   background: var(--surface);
@@ -618,14 +715,14 @@ button {
 
 .skeleton-card__img {
   width: 100%;
-  height: 160px;
+  height: 180px;
   background: linear-gradient(90deg, var(--surface) 0%, var(--surface-hover) 50%, var(--surface) 100%);
   background-size: 200% 100%;
   animation: shimmer 1.5s ease-in-out infinite;
 }
 
 .skeleton-card__body {
-  padding: 1.1rem;
+  padding: 1rem 1.25rem 1.25rem;
   display: flex;
   flex-direction: column;
   gap: 0.6rem;
@@ -658,39 +755,28 @@ button {
   100% { background-position: -200% 0; }
 }
 
-.status-dot {
-  display: inline-block;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  flex-shrink: 0;
-}
-
-.status-dot--success {
-  background: var(--success);
-  box-shadow: 0 0 6px var(--success);
-}
-
-.status-dot--error {
-  background: var(--error);
-  box-shadow: 0 0 6px var(--error);
-}
+/* ── Tx inline ── */
 
 .tx-inline {
-  font-size: 0.82rem;
+  font-size: 0.78rem;
 }
 
 .tx-inline.success { color: var(--success); }
 .tx-inline.error   { color: var(--error); }
 
+/* ── Footer ── */
+
 .footer {
   text-align: center;
-  padding: 3rem 0 1rem;
-  font-size: 0.78rem;
+  padding: 2.5rem 0 1rem;
+  font-size: 0.72rem;
   color: var(--text-muted);
   border-top: 1px solid var(--border);
   margin-top: 3rem;
+  letter-spacing: 0.02em;
 }
+
+/* ── Responsive ── */
 
 @media (max-width: 480px) {
   .app {
@@ -711,7 +797,7 @@ button {
   }
 
   .tx-status-bar {
-    font-size: 0.78rem;
+    font-size: 0.72rem;
   }
 
   .tip-btn {
@@ -751,9 +837,11 @@ button {
   }
 
   .post-img {
-    max-height: 360px;
+    max-height: 400px;
   }
 }
+
+/* ── Focus ── */
 
 :focus-visible {
   outline: 2px solid var(--ember-orange);
@@ -764,6 +852,8 @@ button:disabled,
 button[aria-disabled="true"] {
   outline: none;
 }
+
+/* ── Reduced motion ── */
 
 @media (prefers-reduced-motion: reduce) {
   *,
@@ -776,10 +866,6 @@ button[aria-disabled="true"] {
 
   .tx-status-bar {
     transition: none;
-  }
-
-  .flame-particle {
-    display: none;
   }
 
   .post-card {

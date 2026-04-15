@@ -1,5 +1,6 @@
 import { useState } from "react";
 import type { Contract } from "ethers";
+import { ImagePlus, Send, X } from "lucide-react";
 import { useTxState } from "../hooks/useTxState";
 import type { AppTx } from "../hooks/useTxState";
 import { parseEthersError } from "../utils/errors";
@@ -39,7 +40,9 @@ export function CreatePostForm({ writeContract, onSuccess, appTx }: Props) {
 
   return (
     <form className="create-form" onSubmit={handleSubmit}>
-      <h2 className="form-title">Create Post</h2>
+      <h2 className="form-title">
+        <ImagePlus size={18} /> Create Post
+      </h2>
 
       <input
         className="form-input"
@@ -79,7 +82,7 @@ export function CreatePostForm({ writeContract, onSuccess, appTx }: Props) {
             <span className="spinner" /> Posting...
           </>
         ) : (
-          "Post"
+          <><Send size={14} /> Post</>
         )}
       </button>
 
@@ -87,7 +90,7 @@ export function CreatePostForm({ writeContract, onSuccess, appTx }: Props) {
         <p className="tx-msg error">
           {tx.message}{" "}
           <button type="button" className="dismiss-btn" onClick={reset}>
-            Dismiss
+            <X size={12} /> Dismiss
           </button>
         </p>
       )}

@@ -1,3 +1,5 @@
+import { Wallet } from "lucide-react";
+
 interface Props {
   address: string | null;
   onConnect: () => void;
@@ -15,7 +17,7 @@ export function ConnectButton({ address, onConnect }: Props) {
 
   return (
     <button className="connect-btn" onClick={onConnect}>
-      Connect Wallet
+      <Wallet size={16} /> Connect Wallet
     </button>
   );
 }

@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import type { Contract } from "ethers";
+import { TrendingUp } from "lucide-react";
 import { formatEth } from "../utils/format";
 
 interface Props {
@@ -20,7 +21,7 @@ export function EarningsBadge({ readContract, address, refreshKey }: Props) {
 
   return (
     <span className="earnings-badge" title="Your total ETH earned from tips">
-      <span className="earnings-dot" />
+      <TrendingUp size={14} />
       {formatEth(earned)} ETH earned
     </span>
   );
