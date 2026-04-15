@@ -4,7 +4,7 @@ import type { BrowserProvider, Signer } from "ethers";
 import TipPostABI from "../abi/TipPost.json";
 
 const CONTRACT_ADDRESS = import.meta.env.VITE_CONTRACT_ADDRESS;
-const RPC_URL = "https://rpc.sepolia.org";
+const RPC_URL = "https://ethereum-sepolia-rpc.publicnode.com";
 
 /**
  * readContract  — backed by a public JSON-RPC provider, no wallet needed.
