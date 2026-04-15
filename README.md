@@ -52,6 +52,30 @@ VITE_CONTRACT_ADDRESS=
 VITE_CHAIN_ID=11155111
 ```
 
+## Deploy Steps
+
+### Deploy contract to Sepolia
+```bash
+cd contracts
+cp .env.example .env          # fill in SEPOLIA_RPC_URL, PRIVATE_KEY, ETHERSCAN_API_KEY
+npm install
+npx hardhat compile
+npx hardhat run scripts/deploy.ts --network sepolia
+# Record the printed address → paste into frontend/.env as VITE_CONTRACT_ADDRESS
+npm run copy-abi              # copies ABI to frontend/src/abi/TipPost.json
+```
+
+### (Optional) Verify on Etherscan
+```bash
+npx hardhat verify --network sepolia <DEPLOYED_ADDRESS>
+```
+
+### Deploy frontend to Vercel
+1. Push repo to GitHub
+2. Import project on vercel.com → set **Root Directory** to `frontend`
+3. Set env vars: `VITE_CONTRACT_ADDRESS` and `VITE_CHAIN_ID=11155111`
+4. Framework preset: **Vite** — deploy
+
 ## Sepolia ETH Faucets
 - https://cloud.google.com/application/web3/faucet/ethereum/sepolia
 - https://faucet.quicknode.com/ethereum/sepolia
