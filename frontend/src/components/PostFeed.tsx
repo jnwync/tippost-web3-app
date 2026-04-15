@@ -34,6 +34,7 @@ export function PostFeed({ posts, connectedAddress, readContract, writeContract,
           onLikeSuccess={onLikeSuccess}
           appTx={appTx}
           entranceDelay={i * 50}
+          lazyLoad={i >= 2}
         />
       ))}
     </div>

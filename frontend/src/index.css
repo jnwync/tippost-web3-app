@@ -719,6 +719,30 @@ button {
   .post-body {
     padding: 0.9rem;
   }
+
+  .tx-status-bar {
+    font-size: 0.78rem;
+  }
+
+  .tip-btn {
+    min-height: 44px;
+  }
+
+  .connect-btn,
+  .ghost-btn,
+  .submit-btn,
+  .network-banner__btn,
+  .dismiss-btn {
+    min-height: 44px;
+  }
+
+  .form-input {
+    font-size: 16px;
+  }
+
+  .tip-btn__amount {
+    display: none;
+  }
 }
 
 @media (min-width: 481px) and (max-width: 768px) {
@@ -734,5 +758,50 @@ button {
 @media (min-width: 769px) {
   .app {
     padding: 0 1.5rem 4rem;
+  }
+
+  .post-img {
+    max-height: 360px;
+  }
+}
+
+:focus-visible {
+  outline: 2px solid var(--ember-orange);
+  outline-offset: 2px;
+}
+
+button:disabled,
+button[aria-disabled="true"] {
+  outline: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .tx-status-bar {
+    transition: none;
+  }
+
+  .flame-particle {
+    display: none;
+  }
+
+  .post-card {
+    animation: none;
+  }
+
+  .skeleton-card__img,
+  .skeleton-card__line {
+    animation: none;
+  }
+
+  .spinner {
+    animation-duration: 0.6s;
   }
 }

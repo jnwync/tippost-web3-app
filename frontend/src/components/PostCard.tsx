@@ -15,9 +15,10 @@ interface Props {
   onLikeSuccess: () => void;
   appTx: AppTx;
   entranceDelay?: number;
+  lazyLoad?: boolean;
 }
 
-export function PostCard({ post, connectedAddress, readContract, writeContract, onLikeSuccess, appTx, entranceDelay = 0 }: Props) {
+export function PostCard({ post, connectedAddress, readContract, writeContract, onLikeSuccess, appTx, entranceDelay = 0, lazyLoad = false }: Props) {
   const isOwn =
     !!connectedAddress &&
     connectedAddress.toLowerCase() === post.creator.toLowerCase();
@@ -86,7 +87,11 @@ export function PostCard({ post, connectedAddress, readContract, writeContract, 
     if (isOwn) return "🔥 Your post";
     if (liked) return "❤️‍🔥 Tipped!";
     if (tx.status === "pending") return "Sending...";
-    return "🔥 Tip 0.0001 ETH";
+    return (
+      <>
+        🔥 Tip<span className="tip-btn__amount"> 0.0001 ETH</span>
+      </>
+    );
   };
 
   return (
@@ -102,6 +107,7 @@ export function PostCard({ post, connectedAddress, readContract, writeContract, 
           alt={post.caption}
           className="post-img"
           onError={() => setImgError(true)}
+          loading={lazyLoad ? "lazy" : undefined}
         />
       )}
       <div className="post-body">
@@ -121,6 +127,16 @@ export function PostCard({ post, connectedAddress, readContract, writeContract, 
             className={tipBtnClasses}
             onClick={handleLike}
             disabled={likeDisabled}
+            aria-disabled={likeDisabled}
+            title={
+              isOwn
+                ? "This is your own post"
+                : liked
+                  ? "You have already tipped this post"
+                  : tx.status === "pending"
+                    ? "Transaction pending"
+                    : undefined
+            }
             aria-label={
               isOwn
                 ? "Your own post"

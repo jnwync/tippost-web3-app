@@ -65,6 +65,14 @@ export function CreatePostForm({ writeContract, onSuccess, appTx }: Props) {
         className="submit-btn"
         type="submit"
         disabled={tx.status === "pending" || !imageUrl.trim() || !caption.trim()}
+        aria-disabled={tx.status === "pending" || !imageUrl.trim() || !caption.trim()}
+        title={
+          tx.status === "pending"
+            ? "Post is being submitted"
+            : !imageUrl.trim() || !caption.trim()
+              ? "Fill in both fields to post"
+              : undefined
+        }
       >
         {tx.status === "pending" ? (
           <>
