@@ -24,12 +24,13 @@ function normalize(raw: RawPost): Post {
   };
 }
 
-export function usePosts(readContract: Contract) {
+export function usePosts(readContract: Contract | null) {
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const fetchPosts = useCallback(async () => {
+    if (!readContract) return;
     setLoading(true);
     setError(null);
     try {
@@ -50,6 +51,7 @@ export function usePosts(readContract: Contract) {
 
   // Real-time event listeners
   useEffect(() => {
+    if (!readContract) return;
     const onPostCreated = () => fetchPosts();
     const onPostLiked = (_id: bigint, _liker: string, _creator: string) => fetchPosts();
 
