@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import type { Contract } from "ethers";
 import { parseEther } from "ethers";
+import { Heart, Send, User, ExternalLink } from "lucide-react";
 import type { Post } from "../types/post";
 import { shortAddress, formatEth } from "../utils/format";
 import { parseEthersError } from "../utils/errors";
@@ -84,12 +85,12 @@ export function PostCard({ post, connectedAddress, readContract, writeContract, 
   ].filter(Boolean).join(" ");
 
   const tipLabel = () => {
-    if (isOwn) return "Your post";
-    if (liked) return "Tipped";
-    if (tx.status === "pending") return "Sending...";
+    if (isOwn) return <><User size={14} /> Your post</>;
+    if (liked) return <><Heart size={14} fill="currentColor" /> Tipped</>;
+    if (tx.status === "pending") return <><span className="spinner" /> Sending...</>;
     return (
       <>
-        Tip<span className="tip-btn__amount"> 0.0001 ETH</span>
+        <Send size={14} /> Tip<span className="tip-btn__amount"> 0.0001 ETH</span>
       </>
     );
   };
@@ -118,7 +119,7 @@ export function PostCard({ post, connectedAddress, readContract, writeContract, 
             {isOwn && <span className="you-badge"> (you)</span>}
           </span>
           <span className="post-stats">
-            {post.likes.toString()} {Number(post.likes) === 1 ? "tip" : "tips"} · {formatEth(post.totalEarned)} ETH
+            <Heart size={12} /> {post.likes.toString()} · {formatEth(post.totalEarned)} ETH
           </span>
         </div>
 
@@ -145,9 +146,6 @@ export function PostCard({ post, connectedAddress, readContract, writeContract, 
                   : `Tip 0.0001 ETH to ${shortAddress(post.creator)}`
             }
           >
-            {tx.status === "pending" && (
-              <span className="spinner" />
-            )}
             {tipLabel()}
           </button>
 
@@ -158,7 +156,7 @@ export function PostCard({ post, connectedAddress, readContract, writeContract, 
               rel="noreferrer"
               className="tx-link"
             >
-              Etherscan ↗
+              <ExternalLink size={12} /> Etherscan
             </a>
           )}
           {tx.status === "error" && (
