@@ -11,8 +11,8 @@ A pay-to-like social platform on Ethereum (Sepolia testnet). Post images with ca
 
 ## Deployed Links
 - **Live URL**: _coming soon_
-- **Sepolia Contract**: _coming soon_
-- **Etherscan**: _coming soon_
+- **Sepolia Contract**: `0x90Cd6Cb7464d8aF3E3d5f07ee063f1379d126BE8`
+- **Etherscan**: https://sepolia.etherscan.io/address/0x90Cd6Cb7464d8aF3E3d5f07ee063f1379d126BE8
 
 ## Local Setup
 
